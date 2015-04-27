@@ -1,27 +1,19 @@
-
 import re
-import sys
+import argparse
+import os
 
-if len(sys.argv) > 1:
-    Makefile_in = sys.argv[1]
-else:
-    Makefile_in = "Makefile.in"
+parser = argparse.ArgumentParser()
+parser.add_argument('--hdf5_inc', type=str)
+parser.add_argument('--use_mpio', type=str)
+args = vars(parser.parse_args())
 
-print "[HDF5 Parser] using Makefile.in:", Makefile_in
+print args
+
 verbose = False # print more stuff
 
 # Read the Makefile.in
-Makefile_in_dict = { }
-for line in open(Makefile_in):
-    line = line[:line.find('#')]
-    if line:
-        if line.find('HDF_HOME') != -1 or line.find('USE_MPIO') != -1:
-            k, v = line.replace(' ', '').split('=')
-            Makefile_in_dict[k] = v
-
-hdf5_inc = Makefile_in_dict.get('HDF_HOME', '/usr/local') + "/include"
-use_mpio = Makefile_in_dict.get('USE_MPIO', '0') # Include MPI constants and functions
-use_mpio = int(use_mpio)
+hdf5_inc = args['hdf5_inc']
+use_mpio = args['use_mpio'] == 'ON'
 print "[HDF5 Parser] USE_MPIO:", use_mpio
 
 # Function prototypes not to wrap
