@@ -271,7 +271,7 @@ static int _H5Pget_mpio_no_collective_cause(lua_State *L)
 #include "h5funcs.c"
 
 
-int luaopen_hdf5(lua_State *L)
+int luaopen_HDF5(lua_State *L)
 {
   luaL_Reg hdf5_auxf[] = {
     {"new_hid_t", _new_hid_t},
