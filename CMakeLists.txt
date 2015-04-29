@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 2.6)
-project(lua-hdf5)
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+cmake_minimum_required(VERSION 2.8)
+project(lua-hdf5 C)
+
+include(cmake/dist.cmake)
+include(lua)
 
 find_package(HDF5 COMPONENTS CXX REQUIRED)
-find_package(Lua52 REQUIRED)
 
 option(USE_MPIO "use HDF5 mpio feature" OFF)
 
@@ -25,11 +26,17 @@ include_directories(SYSTEM
   ${HDF5_INCLUDE_DIR}
   ${LUA_INCLUDE_DIR})
 
-add_library(HDF5 SHARED lua-hdf5.c)
+install_lua_module(HDF5 lua-hdf5.c)
+install_lua_module(buffer buffer.c)
+install_lua_module(LuaHDF5 LuaHDF5.lua)
+install_lua_module(array array.lua)
+install_lua_module(class class.lua)
+
 add_dependencies(HDF5 generate_h5funcs)
 target_link_libraries(HDF5 ${LUA_LIBRARIES} ${HDF5_LIBRARIES})
-set_target_properties(HDF5 PROPERTIES PREFIX "")
-
-add_library(buffer SHARED buffer.c)
 target_link_libraries(buffer ${LUA_LIBRARIES} ${HDF5_LIBRARIES})
-set_target_properties(buffer PROPERTIES PREFIX "")
+
+# Schedules a test, this is optional
+add_lua_test(LuaHDF5.lua)
+add_lua_test(array.lua)
+add_lua_test(run.lua)

@@ -1,0 +1,13 @@
+-- LuaDist info file
+name = "lua-hdf5"
+version = "1.0.0"
+
+desc = "a high and low-level Lua interface to the HDF5 library"
+maintainer = "Jonathan Zrake"
+author = "Jonathan Zrake"
+license = "MIT/X11"
+url = "https://github.com/jzrake/lua-hdf5"
+
+depends = {
+  "lua >= 5.1"
+}
